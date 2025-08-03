@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Media {
+  id        Int      @id @default(autoincrement())
+  title     String
+  type      String
+  director  String
+  budget    String
+  location  String
+  duration  String
+  year      String
+  poster    String? 
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  media     Media[]
+  createdAt DateTime @default(now())
+}
