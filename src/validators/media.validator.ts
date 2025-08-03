@@ -8,7 +8,7 @@ export const mediaSchema = z.object({
     location: z.string().min(1),
     duration: z.string().min(1),
     year: z.string().min(1),
-    poster: z.string().optional(),
+    poster: z.any().optional(),
 });
 
 export type MediaInput = z.infer<typeof mediaSchema>;
