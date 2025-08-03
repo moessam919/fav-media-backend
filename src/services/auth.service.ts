@@ -11,7 +11,21 @@ export const register = async (email: string, password: string) => {
 
 export const login = async (email: string, password: string) => {
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+
+    console.log("📧 Email:", email);
+    console.log("🔐 Password (plain):", password);
+    console.log("🧑‍💻 User from DB:", user);
+
+    if (!user) {
+        console.log("❌ No user found");
+        throw new Error("Invalid credentials");
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    console.log("🔍 Password match:", isPasswordMatch);
+
+    if (!isPasswordMatch) {
+        console.log("❌ Password mismatch");
         throw new Error("Invalid credentials");
     }
 
