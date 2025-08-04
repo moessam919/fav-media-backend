@@ -8,11 +8,11 @@ export const createMedia = async (req: Request, res: Response) => {
         console.log("Request body:", req.body);
         console.log("Request file:", req.file);
         console.log("User ID:", (req as any).userId);
-        console.log("Content-Type:", req.headers['content-type']);
+        console.log("Content-Type:", req.headers["content-type"]);
 
         const validated = mediaSchema.parse(req.body);
         console.log("Validated data:", validated);
-        
+
         const poster = req.file?.filename;
         console.log("Poster filename:", poster);
 
