@@ -4,26 +4,14 @@ import { mediaSchema } from "../validators/media.validator";
 
 export const createMedia = async (req: Request, res: Response) => {
     try {
-        console.log("=== CREATE MEDIA DEBUG ===");
-        console.log("Request body:", req.body);
-        console.log("Request file:", req.file);
-        console.log("User ID:", (req as any).userId);
-        console.log("Content-Type:", req.headers["content-type"]);
-
         const validated = mediaSchema.parse(req.body);
-        console.log("Validated data:", validated);
-
         const poster = req.file?.filename;
-        console.log("Poster filename:", poster);
 
-        const dataToSend = {
+        const media = await MediaService.createMedia({
             ...validated,
             poster,
             userId: (req as any).userId,
-        };
-        console.log("Data to send to Prisma:", dataToSend);
-
-        const media = await MediaService.createMedia(dataToSend);
+        });
 
         const host = `${req.protocol}://${req.get("host")}`;
         const fullPoster = media.poster
@@ -32,8 +20,11 @@ export const createMedia = async (req: Request, res: Response) => {
 
         res.status(201).json({ ...media, poster: fullPoster });
     } catch (err) {
-        console.error("Create media error:", err);
-        res.status(400).json({ error: err });
+        if (err instanceof Error) {
+            res.status(400).json({ error: err.message });
+        } else {
+            res.status(400).json({ error: "Invalid request data" });
+        }
     }
 };
 

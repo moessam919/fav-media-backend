@@ -8,26 +8,7 @@ export const getMediaById = (id: number) => {
 };
 
 export const createMedia = (data: MediaInput & { userId: number }) => {
-    console.log("=== PRISMA CREATE DEBUG ===");
-    console.log("Data received by service:", data);
-    console.log("Data types:", {
-        title: typeof data.title,
-        type: typeof data.type,
-        director: typeof data.director,
-        budget: typeof data.budget,
-        location: typeof data.location,
-        duration: typeof data.duration,
-        year: typeof data.year,
-        poster: typeof data.poster,
-        userId: typeof data.userId
-    });
-    
-    return prisma.media.create({ 
-        data,
-        include: {
-            user: false
-        }
-    });
+    return prisma.media.create({ data });
 };
 
 export const getAllMedia = (page: number, limit: number) => {
