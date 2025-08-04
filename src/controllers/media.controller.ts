@@ -4,17 +4,26 @@ import { mediaSchema } from "../validators/media.validator";
 
 export const createMedia = async (req: Request, res: Response) => {
     try {
-        console.log("Create media request body:", req.body);
-        console.log("Create media request file:", req.file);
+        console.log("=== CREATE MEDIA DEBUG ===");
+        console.log("Request body:", req.body);
+        console.log("Request file:", req.file);
+        console.log("User ID:", (req as any).userId);
+        console.log("Content-Type:", req.headers['content-type']);
 
         const validated = mediaSchema.parse(req.body);
+        console.log("Validated data:", validated);
+        
         const poster = req.file?.filename;
+        console.log("Poster filename:", poster);
 
-        const media = await MediaService.createMedia({
+        const dataToSend = {
             ...validated,
             poster,
             userId: (req as any).userId,
-        });
+        };
+        console.log("Data to send to Prisma:", dataToSend);
+
+        const media = await MediaService.createMedia(dataToSend);
 
         const host = `${req.protocol}://${req.get("host")}`;
         const fullPoster = media.poster
