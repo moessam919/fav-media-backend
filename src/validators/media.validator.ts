@@ -7,7 +7,10 @@ export const mediaSchema = z.object({
     budget: z.string().min(1),
     location: z.string().min(1),
     duration: z.string().min(1),
-    year: z.string().min(1),
+    year: z
+        .string()
+        .min(1)
+        .regex(/^\d{4}$/, "Year must be 4 digits"),
     poster: z.any().optional(),
 });
 

@@ -4,6 +4,9 @@ import { mediaSchema } from "../validators/media.validator";
 
 export const createMedia = async (req: Request, res: Response) => {
     try {
+        console.log("Create media request body:", req.body);
+        console.log("Create media request file:", req.file);
+
         const validated = mediaSchema.parse(req.body);
         const poster = req.file?.filename;
 
@@ -20,6 +23,7 @@ export const createMedia = async (req: Request, res: Response) => {
 
         res.status(201).json({ ...media, poster: fullPoster });
     } catch (err) {
+        console.error("Create media error:", err);
         res.status(400).json({ error: err });
     }
 };
